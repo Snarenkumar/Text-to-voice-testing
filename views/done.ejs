@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Text to Speech Result</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+        }
+        h1 {
+            color: #333;
+        }
+        audio {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Text-to-Speech Conversion Complete!</h1>
+    <p>Your text has been successfully converted to speech.</p>
+    <audio controls>
+        <source src="<%= audioFile %>" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+    <br><br>
+    <a href="/">Go back</a>
+</body>
+</html>
