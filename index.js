@@ -20,7 +20,9 @@ app.get('/', (req, res) => {
 // Route to handle the form submission
 app.post('/done', (req, res) => {
     const text = req.body.text;
-    const language = 'en'; // Language for TTS
+    
+    const language = req.body.language; 
+    console.log(text + language)
 
     const gtts = new gTTS(text, language);
     const filePath = path.join(__dirname, 'public', 'output.mp3');
