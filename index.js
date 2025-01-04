@@ -6,7 +6,7 @@ const path = require('path');
 const app = express();
 const port = 3000;
 
-// Middleware
+
 app.use(bodyParser.urlencoded({ extended: true }));
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views')); // Set the views folder
@@ -17,7 +17,6 @@ app.get('/', (req, res) => {
     res.render('index'); // Render index.ejs
 });
 
-// Route to handle the form submission
 app.post('/done', (req, res) => {
     const text = req.body.text;
     
