@@ -10,7 +10,7 @@ const port = 3000;
 app.use(bodyParser.urlencoded({ extended: true }));
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views')); // Set the views folder
-app.use(express.static(path.join(__dirname, 'public'))); // For static assets like styles
+app.use(express.static(path.join(__dirname, 'public')));// For static assets like styles
 
 // Route to render the HTML form
 app.get('/', (req, res) => {
@@ -24,7 +24,7 @@ app.post('/done', (req, res) => {
     console.log(text + language)
 
     const gtts = new gTTS(text, language);
-    const filePath = path.join(__dirname, 'public', 'output.mp3');
+    const filePath = path.join(__dirname, 'public',  'output.mp3');
 
     gtts.save(filePath, (err, result) => {
         if (err) {

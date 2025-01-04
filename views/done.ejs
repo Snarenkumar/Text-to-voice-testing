@@ -30,4 +30,43 @@
     <br><br>
     <a href="/">Go back</a>
 </body>
+<script type="module">
+    document.getElementById("tts-form").addEventListener("submit", (event) => {
+        event.preventDefault(); // Prevent form from refreshing the page
+
+        const text = document.getElementById("text-input").value.trim(); // Get text input
+        const language = document.getElementById("language-select").value; // Get selected language
+
+        if (!text) {
+            alert("Please enter text to convert.");
+            return;
+        }
+
+        console.log("Sending Text:", text);
+        console.log("Sending Language:", language);
+
+        fetch("http://localhost:3000/done", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ text, language }), // Send text and language
+        })
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error("Failed to generate audio");
+                }
+                return response.blob(); // Receive audio as Blob
+            })
+            .then((audioBlob) => {
+                const audioUrl = URL.createObjectURL(audioBlob); // Create audio URL
+                const audio = new Audio(audioUrl);
+                audio.play(); // Play audio
+            })
+            .catch((error) => {
+                console.error("Error processing request:", error);
+                alert("Error: Failed to generate audio. Please try again.");
+            });
+    });
+</script>
 </html>
