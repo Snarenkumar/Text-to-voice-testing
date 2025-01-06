@@ -1,16 +1,17 @@
 {
     "version": 2,
+    "name": "texttospeech",
     "builds": [
-     {
-      "src": "index1.js",
-      "use": "@vercel/node",
-      "config": { "includeFiles": ["dist/**"] }
-     }
+      {
+        "src": "index1.js",
+        "use": "@vercel/node"
+      }
     ],
     "routes": [
-     {
-      "src": "/(.*)",
-      "dest": "index1.js"
-     }
+      {
+        "src": "/(.*)",
+        "dest": "index1.js"
+      }
     ]
-   }
+  }
+  
