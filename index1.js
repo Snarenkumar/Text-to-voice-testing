@@ -60,3 +60,6 @@ app.post("/generate-audio", (req, res) => {
 app.listen(port, () => {
     console.log(`Server is running at http://localhost:${port}`);
 });
+app.get("/", (req, res) => {
+    res.send("Welcome to the Text-to-Speech API. Use the POST /generate-audio endpoint to generate audio.");
+});

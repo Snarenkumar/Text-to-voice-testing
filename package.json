@@ -1,10 +1,10 @@
 {
-  "name": "texttospeach",
+  "name": "texttospeech",
   "version": "1.0.0",
   "main": "index1.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": " index1.js"
+    "start": "node index1.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
@@ -18,6 +18,6 @@
     "gtts": "^0.2.1",
     "node-fetch": "^3.3.2",
     "path": "^0.12.7",
-    "texttospeach": "file:"
+    "texttospeech": "file:"
   }
 }
