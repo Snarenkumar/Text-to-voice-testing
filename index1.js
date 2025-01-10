@@ -66,7 +66,7 @@ app.post("/generate-audio", async (req, res) => {
     }
 });
 
-// ssdfdfRoot edsfndfgaspoint
+// ssdfdfRoot edsfndfgaspointdsf
 app.get("/", (req, res) => {
     res.send("Welcome to the Text-to-Speech API. Use the POST /generate-audio endpoint to generate audio.");
 });
