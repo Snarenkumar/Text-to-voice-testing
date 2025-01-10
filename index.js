@@ -1,7 +1,7 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import fetch from 'node-fetch'; // For making HTTP requests to external services
-import gTTS from 'gtts';  // Google Text-to-Speech library
+import { TextToSpeechClient } from '@google-cloud/text-to-speech'; //replaced ggts with the new module 
 import path from 'path';
 import { fileURLToPath } from 'url';
 
@@ -15,9 +15,14 @@ const port = 3000;
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
 
+
+
+
+// declareing the clinet for the gc/TextToSpeechClient
+const client = new TextToSpeechClient();
 // Handle POST request to generate audio
 app.post("/generate-audio", (req, res) => {
-    const { text, language } = req.body;
+    const { text, language,voice,rate,pitch } = req.body;
 
     // Debugging log to ensure text and language are received properly
     console.log("Received request with text:", text, "and language:", language);
