@@ -1,7 +1,8 @@
 import express from 'express';
 import bodyParser from 'body-parser';
-import fetch from 'node-fetch'; // For making HTTP requests to external services
-import gTTS from 'gtts';  // Google Text-to-Speech library
+import { TextToSpeechClient } from '@google-cloud/text-to-speech'; // Import Google Cloud Text-to-Speech library
+import fs from 'fs';
+import util from 'util';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
@@ -15,54 +16,64 @@ const port = 3000;
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
 
+// Initialize Google Cloud Text-to-Speech client
+const client = new TextToSpeechClient();
+
 // Handle POST request to generate audio
-app.post("/generate-audio", (req, res) => {
-    const { text, language } = req.body;
+app.post("/generate-audio", async (req, res) => {
+    const { text, language, voice, rate, pitch } = req.body;
 
-    // Debugging log to ensure text and language are received properly
-    console.log("Received request with text:", text, "and language:", language);
+    console.log("Received request with text:", text, "language:", language, "voice:", voice, "rate:", rate, "pitch:", pitch);
 
-    // Check if both text and language are provided
-    if (!text || !language) {
-        console.log("Error: Text and language are required");
-        return res.status(400).send("Text and language are required");
+    // Validate required fields
+    if (!text || !language || !voice) {
+        return res.status(400).send("Text, language, and voice are required");
     }
 
     try {
-        // Convert text to speech using gTTS
-        const gtts = new gTTS(text, language);  
-        const filePath = path.join(__dirname, 'output.mp3'); // Path to save the audio file
+        // Construct request for Google Text-to-Speech API
+        const request = {
+            input: { text }, // Text to convert to speech
+            voice: {
+                languageCode: language,
+                name: voice, // Specific voice name
+            },
+            audioConfig: {
+                audioEncoding: "MP3", // Output format
+                speakingRate: rate || 1.0, // Default rate
+                pitch: pitch || 0, // Default pitch
+            },
+        };
 
-        console.log("Saving audio to:", filePath);
+        // Generate audio using Google Text-to-Speech API
+        const [response] = await client.synthesizeSpeech(request);
 
-        gtts.save(filePath, (err) => {
+        // Save the audio content to a file
+        const outputFilePath = path.join(__dirname, 'output.mp3');
+        await util.promisify(fs.writeFile)(outputFilePath, response.audioContent, 'binary');
+        console.log(`Audio content written to file: ${outputFilePath}`);
+
+        // Send the audio file to the client
+        res.sendFile(outputFilePath, (err) => {
             if (err) {
-                console.error("Error generating audio:", err);
-                return res.status(500).send("Error generating audio");
+                console.error("Error sending audio file:", err);
+                res.status(500).send("Error sending audio file");
             }
-
-            // Log success and send the generated audio file
-            console.log("Audio file generated successfully. Sending file:", filePath);
-            res.sendFile(filePath, (err) => {
-                if (err) {
-                    console.error("Error sending audio file:", err);
-                    res.status(500).send("Error sending audio file");
-                }
-            });
         });
     } catch (error) {
         console.error("Error processing request:", error);
-        res.status(500).send("Error processing request");
+        res.status(500).send("Error generating audio");
     }
+});
+
+// Root endpoint
+app.get("/", (req, res) => {
+    res.send("Welcome to the Text-to-Speech API. Use the POST /generate-audio endpoint to generate audio.");
 });
 
 // Start the server
 app.listen(port, () => {
     console.log(`Server is running at http://localhost:${port}`);
 });
-app.get("/", (req, res) => {
-    res.send("Welcome to the Text-to-Speech API. Use the POST /generate-audio endpoint to generate audio.");
-});
 
-app.use(express.static('public')); // Serve files from the 'public' folder
-
+app.use(express.static('public')); // Serve static files from the 'public' folder
