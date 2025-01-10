@@ -28,9 +28,9 @@ app.get("/", (req, res) => {
 
 // Handle form submission and send data to the backend server
 app.post("/done", async (req, res) => {
-    const { text, language } = req.body;
+    const { text, language,voice,rate,pitch } = req.body;
 
-    console.log("Received Text:", text, "Received Language:", language); // Debugging log
+    console.log("Received Text:", text, "Received Language:", language, "Received voice:", voice , "Received rate:", rate , "Received pitch:", pitch  ); // Debugging log
 
     if (!text || !language) {
         return res.status(400).send("Text and language are required");
