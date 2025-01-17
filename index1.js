@@ -45,7 +45,7 @@ app.post("/generate-audio", async (req, res) => {
             },
         };
 
-        // Gsadenerate audio using Google Tesadasdssaxt-to-Speech API
+        // Generate audio using Google Tesadasdssaxt-to-Speech API
         const [response] = await client.synthesizeSpeech(request);
 
         // Save the audio content to a file
