@@ -18,7 +18,7 @@ app.use(express.json());
 
 // Initialize Google Cloud Text-to-Speech client
 
-// demo fiwerle tewewresting
+// dewremo fiwerle tewewresting
 const client = new TextToSpeechClient();
 
 // Handle POST request to generate audio
