@@ -17,6 +17,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
 
 // Initialize Google Cloud Text-to-Speech client
+
+// demo file testing
 const client = new TextToSpeechClient();
 
 // Handle POST request to generate audio
